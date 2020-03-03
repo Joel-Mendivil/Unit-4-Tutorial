@@ -54,17 +54,41 @@
 	
 */
 
+//Run the init() function when the page loads
 window.onload = init();
+var puzzleCells;
+var cellBackground;
 
 function init(){
+   //Insert the title for the first puzzle
     document.getElementById("puzzleTitle").innerHTML = "Puzzle 1";
 
+    //Insert the HTML code for the first puzzle
     document.getElementById("puzzle").innerHTML = drawPuzzle(puzzle1Hint, puzzle1Rating, puzzle1);
 
+    //Add event handlers for the puzzle buttons
     var puzzleButtons = document.getElementsByClassName("puzzles");
     for (var i = 0; i < puzzleButtons.length; i++){
         puzzleButtons[i].onclick = swapPuzzle;
     }
+
+    setupPuzzle();
+}
+
+function setupPuzzle(){
+   //Match all of the data cells in the puzzle
+   puzzleCells = document.querySelectorAll("table#hanjieGrid td");
+
+   for(var i = 0; i < puzzleCells.length; i++){
+      puzzleCells[i].style.backgroundColor = "rgb(233, 207, 29)";
+      //Set the cell background color in response to the mouse down event
+      puzzleCells[i].onmousedown = setBackground;
+   }
+}
+
+function setBackground(e){
+   cellBackground = "rgb(101,101,101)";
+   e.target.style.backgroundColor = cellBackground;
 }
 
 function swapPuzzle(e){
@@ -81,7 +105,8 @@ function swapPuzzle(e){
         case "puzzle3":
             document.getElementById("puzzle").innerHTML = drawPuzzle(puzzle3Hint, puzzle3Rating, puzzle3);
             break;
-    }
+   }
+   setupPuzzle();
 }
 
          
