@@ -73,6 +73,16 @@ function init(){
     }
 
     setupPuzzle();
+
+    //Add an event listener for the mouseup event
+    document.addEventListener("mouseup", endBackground);
+}
+
+function endBackground(){
+   //Remove the event listener for every puzzle cell
+   for(var i = 0; i < puzzleCells.length; i++){
+      puzzleCells[i].removeEventListener("mouseenter", extendBackground);
+   }
 }
 
 function setupPuzzle(){
@@ -80,14 +90,36 @@ function setupPuzzle(){
    puzzleCells = document.querySelectorAll("table#hanjieGrid td");
 
    for(var i = 0; i < puzzleCells.length; i++){
-      puzzleCells[i].style.backgroundColor = "rgb(233, 207, 29)";
+      puzzleCells[i].style.backgroundColor = "rgb(255, 215, 0)";
       //Set the cell background color in response to the mouse down event
       puzzleCells[i].onmousedown = setBackground;
    }
 }
 
 function setBackground(e){
-   cellBackground = "rgb(101,101,101)";
+
+   //Set the background based on the keyboard key
+   if(e.shiftKey){
+      cellBackground = "rgb(255, 215, 0)";
+   }else if(e.altKey){
+      cellBackground = "rgb(255, 255, 255)";
+   }
+   else{
+      cellBackground = "rgb(101, 101, 101)";
+   }
+
+   e.target.style.backgroundColor = cellBackground;
+
+   //Create an event listener for every puzzle cell
+   for(var i = 0; i < puzzleCells.length; i++){
+      puzzleCells[i].addEventListener("mouseenter", extendBackground);
+   }
+
+   //Prevent the default action of selecting table text
+   e.preventDefault();
+}
+
+function extendBackground(e){
    e.target.style.backgroundColor = cellBackground;
 }
 
